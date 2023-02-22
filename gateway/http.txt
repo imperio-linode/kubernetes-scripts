@@ -1,0 +1,12 @@
+curl -v -HHost:instances.imperio --resolve "instances.imperio:$SECURE_INGRESS_PORT:$INGRESS_HOST" \
+  --cacert certs/imperio.crt "https://instances.imperio:$SECURE_INGRESS_PORT/hello"
+
+curl -v -HHost:gateway.imperio --resolve "gateway.imperio:$SECURE_INGRESS_PORT:$INGRESS_HOST" \
+  --cacert certs/imperio.crt "https://gateway.imperio:$SECURE_INGRESS_PORT/hello"
+
+
+curl -v -HHost:instances.imperio --resolve "instances.imperio:$SECURE_INGRESS_PORT:$INGRESS_HOST" \
+  --cacert certs/imperio.crt "https://instances.imperio:$SECURE_INGRESS_PORT/one/1"
+
+curl -v -HHost:instances.imperio --resolve "instances.imperio:$SECURE_INGRESS_PORT:$INGRESS_HOST" \
+  --cacert certs/imperio.crt "https://instances.imperio:$SECURE_INGRESS_PORT/instances/one/1"
