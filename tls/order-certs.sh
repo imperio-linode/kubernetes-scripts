@@ -1,7 +1,6 @@
 #!/bin/bash
 
 
-workdir=/Users/mcop/work/imperio
 certsdir=$workdir/kubernetes-scripts/tls/certs
 
 . $workdir/kubernetes-scripts/log.sh
