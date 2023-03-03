@@ -54,7 +54,7 @@ kubectl create -n istio-system secret tls linode-services-imperio-credential \
   --key=$certsdir/linode-services.imperio.key \
   --cert=$certsdir/linode-services.imperio.crt
 
-inf "Create Certs" "Generating pkcs12 storess..."
+inf "Create Certs" "Generating pkcs12 stores..."
 openssl pkcs12 -export -password pass:$exportPass -out $workdir/instances/src/main/resources/keystore.p12 -inkey $certsdir/instances.imperio.key -in $certsdir/instances.imperio.crt
 openssl pkcs12 -export -password pass:$exportPass -out $workdir/gateway/src/main/resources/keystore.p12 -inkey $certsdir/gateway.imperio.key -in $certsdir/gateway.imperio.crt
 #Looks like only this one is needed, but only because we have mTLS from istio. Otherwise needs to add keystores.
