@@ -14,7 +14,7 @@ helm install istio-base istio/base -n istio-system &>/dev/null
 
 #todo: ask if valid
 inf "istio" "Installing istiod..."
-helm install istiod istio/istiod -n istio-system --wait
+helm install istiod istio/istiod -n istio-system --wait &>/dev/null
 
 #todo: ask if valid
 inf "istio" "Helm ls 2"
@@ -26,6 +26,8 @@ helm status istiod -n istio-system &>/dev/null
 inf "istio" "Installing crds..."
 kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
   { kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.6.1" | kubectl apply -f -; }
+kubectl get crd tcproutes.gateway.networking.k8s.io &> /dev/null || \
+  { kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.6.1" | sed 's@HTTPRoute@TCPRoute@' | kubectl apply -f -; }
 
 inf "istio" "Creating ingress namespace..."
 kubectl create namespace istio-ingress
