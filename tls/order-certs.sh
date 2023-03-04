@@ -15,11 +15,9 @@ exportPass=$1
 inf "Create Certs" "Initializing..."
 mkdir $workdir/kubernetes-scripts/tls/certs
 
-
 inf "Create Certs" "Generating CA..."
 #CA domain        key1 + crt1
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=Better Nerf./CN=imperio' -keyout $certsdir/imperio.key -out $certsdir/imperio.crt
-
 
 inf "Create Certs" "Generating service keypairs..."
 #CSR + prv key gateway      key2 + csr1
@@ -41,7 +39,6 @@ openssl x509 -req -sha256 -days 365 -CA $certsdir/imperio.crt -CAkey $certsdir/i
 openssl req -out $certsdir/linode-services.imperio.csr -newkey rsa:2048 -nodes -keyout $certsdir/linode-services.imperio.key -subj "/CN=linodeservices.imperio/O=linodeservices organization"
 #CERT linode-services
 openssl x509 -req -sha256 -days 365 -CA $certsdir/imperio.crt -CAkey $certsdir/imperio.key -set_serial 1 -in $certsdir/linode-services.imperio.csr -out $certsdir/linode-services.imperio.crt
-
 
 inf "Create Certs" "Creating kubernetes secrets..."
 kubectl create -n istio-system secret tls instances-credential \

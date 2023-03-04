@@ -4,7 +4,9 @@
 kubectl delete secret gateway-imperio-credential -n istio-system
 kubectl delete secret instances-credential -n istio-system
 kubectl delete secret linode-services-imperio-credential -n istio-system
+
 pwd
+
 rm $workdir/instances/src/main/resources/*.p12
 rm $workdir/instances/src/main/resources/*.crt
 rm $workdir/instances/src/main/resources/*.key
