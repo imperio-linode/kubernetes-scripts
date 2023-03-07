@@ -6,14 +6,15 @@ helm repo add istio https://istio-release.storage.googleapis.com/charts &>/dev/n
 helm repo update &>/dev/null
 
 inf "istio" "Install gateway api"
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/standard-install.yaml &>/dev/null
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.6.1/experimental-install.yaml &>/dev/null
+
 
 inf "istio" "Create istio namespace"
 kubectl create namespace istio-system
 helm install istio-base istio/base -n istio-system &>/dev/null
 
 #todo: ask if valid
-inf "istio" "Installing istiod..."
+inf "istio" "Installing istiod"
 helm install istiod istio/istiod -n istio-system --wait &>/dev/null
 
 #todo: ask if valid
@@ -23,13 +24,13 @@ helm ls -n istio-system
 inf "istio" "Helm status"
 helm status istiod -n istio-system &>/dev/null
 
-inf "istio" "Installing crds..."
+inf "istio" "Installing crds"
 kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
   { kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.6.1" | kubectl apply -f -; }
-kubectl get crd tcproutes.gateway.networking.k8s.io &> /dev/null || \
+kubectl get crd tcproutes.networking.k8s.io &> /dev/null || \
   { kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.6.1" | sed 's@HTTPRoute@TCPRoute@' | kubectl apply -f -; }
 
-inf "istio" "Creating ingress namespace..."
+inf "istio" "Creating ingress namespace"
 kubectl create namespace istio-ingress
 inf "istio" "Install gateway"
 helm install istio-ingress istio/gateway -n istio-ingress --wait &>/dev/null

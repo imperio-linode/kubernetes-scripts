@@ -35,7 +35,7 @@ checkOrInstallHelm() {
   if [ $? -eq 0 ]; then
     inf "Imperio" "Helm already present."
   else
-    err "Imperio" "Helm not installed. Installing..."
+    err "Imperio" "Helm not installed. Installing"
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     if [ $? -eq 0 ]; then
       inf "Imperio" "Helm installed."
@@ -52,7 +52,7 @@ installPostgress() {
 }
 
 initGateway() {
-  inf "imperio" "Installing Istio..."
+  inf "imperio" "Installing Istio"
   sh $workdir/kubernetes-scripts/gateway/install-istio.sh
   if [ $? -eq 0 ]; then
     inf "Imperio" "Istio installed correctly."
@@ -63,7 +63,7 @@ initGateway() {
 }
 
 rotateCerts() {
-  inf "imperio" "Creating TLS certs..."
+  inf "imperio" "Creating TLS certs"
 
   kubectl create secret generic imperio-store --from-literal=spring=$exportPass
   sh $workdir/kubernetes-scripts/tls/rotate.sh $exportPass
