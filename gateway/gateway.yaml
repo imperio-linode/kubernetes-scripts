@@ -1,3 +1,6 @@
+---
+#Main gateway -> Define all routes below it and add into listeners here.
+---
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: Gateway
 metadata:
@@ -12,6 +15,8 @@ spec:
       protocol: HTTPS
       tls:
         mode: Terminate
+        #      options:
+        #        gateway.istio.io/tls-terminate-mode: MUTUAL
         certificateRefs:
           - name: instances-credential
       allowedRoutes:
@@ -26,6 +31,8 @@ spec:
       protocol: HTTPS
       tls:
         mode: Terminate
+        #      options:
+        #        gateway.istio.io/tls-terminate-mode: MUTUAL
         certificateRefs:
           - name: gateway-imperio-credential
       allowedRoutes:
@@ -34,6 +41,24 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: default
+    - name: https-linode-services
+      hostname: "linodeservices.imperio"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        #      options:
+        #        gateway.istio.io/tls-terminate-mode: MUTUAL
+        certificateRefs:
+          - name: linode-services-imperio-credential
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: default
+---
+#Routes
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
@@ -71,3 +96,20 @@ spec:
         - name: imperio-gateway
           port: 8000
 ---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: imperio-linode-services
+spec:
+  parentRefs:
+    - name: cluster-gateway
+      namespace: istio-system
+  hostnames: [ "linodeservices.imperio" ]
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: imperio-linode-services
+          port: 8000
