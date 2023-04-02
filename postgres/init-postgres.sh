@@ -13,7 +13,7 @@ kubectl apply -f $workdir/kubernetes-scripts/postgres/postgres-pv.yaml
 inf "postgres" "Installing postgres"
 helm install data-imperio bitnami/postgresql --set persistence.existingClaim=postgresql-pv-claim --set volumePermissions.enabled=true &>/dev/null
 inf "postgres" "Exposing postgres"
-kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name=postgresql --timeout=50s
+kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name=postgresql --timeout=150s
 export POSTGRES_PASSWORD=$(kubectl get secret data-imperio-postgresql -o jsonpath="{.data.postgres-password}" | base64 --decode)
 
 inf "postgres" "Creating database imperio"

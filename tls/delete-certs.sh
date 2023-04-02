@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 kubectl delete secret gateway-imperio-credential -n istio-system
 kubectl delete secret instances-credential -n istio-system
 kubectl delete secret linode-services-imperio-credential -n istio-system

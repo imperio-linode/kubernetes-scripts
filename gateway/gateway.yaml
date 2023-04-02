@@ -1,6 +1,4 @@
 ---
-#Main gateway -> Define all routes below it and add into listeners here.
----
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: Gateway
 metadata:
@@ -59,7 +57,6 @@ spec:
               kubernetes.io/metadata.name: default
 ---
 #Routes
----
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:

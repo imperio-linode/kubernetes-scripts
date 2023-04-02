@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#This should be done by certbot in prod. Example todo.
 
 certsdir=$workdir/kubernetes-scripts/tls/certs
 
