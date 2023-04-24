@@ -4,9 +4,9 @@ export workdir=~/work/imperio
 
 . $workdir/kubernetes-scripts/log.sh
 
-#Use with 1 parameter which is CA password.
 
 exportPass=$1
+linodeToken=$2
 
 external_ip=$(kubectl get svc -n istio-system cluster-gateway-istio --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
 
@@ -17,6 +17,7 @@ main() {
   installPostgress
   initGateway
   rotateCerts
+  kubectl create secret generic linode-token --from-literal=linode-token=$linodeToken
   postInstallInfo
 }
 

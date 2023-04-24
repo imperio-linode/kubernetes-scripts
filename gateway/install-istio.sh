@@ -1,5 +1,7 @@
 #!/bin/bash
 
+workdir=~/work/imperio
+
 . $workdir/kubernetes-scripts/log.sh
 
 helm repo add istio https://istio-release.storage.googleapis.com/charts &>/dev/null
