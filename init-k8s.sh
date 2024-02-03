@@ -12,13 +12,22 @@ external_ip=$(kubectl get svc -n istio-system cluster-gateway-istio --template="
 
 main() {
   inf "Imperio] \n\n\n\t\t\t:[\INSTALLING APP\t" "\n"
+  kubectl create ns istio-system &>/dev/null
   checkClusterConnection
   checkOrInstallHelm
+  initRegistry
   installPostgress
   initGateway
   rotateCerts
   kubectl create secret generic linode-token --from-literal=linode-token=$linodeToken
+
   postInstallInfo
+}
+
+initRegistry() {
+  inf "imperio" "\tInitializing registry"
+  docker run -d -p 5000:5000 --restart=always --name registry registry:2
+  inf "imperio" "Registry initialized"
 }
 
 checkClusterConnection() {

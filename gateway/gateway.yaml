@@ -55,6 +55,22 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: default
+    - name: https-app
+      hostname: "app.imperio"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        #      options:
+        #        gateway.istio.io/tls-terminate-mode: MUTUAL
+        certificateRefs:
+          - name: linode-services-imperio-credential
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: default
 ---
 #Routes
 apiVersion: gateway.networking.k8s.io/v1beta1
@@ -109,4 +125,22 @@ spec:
             value: /
       backendRefs:
         - name: imperio-linode-services
+          port: 8000
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: imperio-app
+spec:
+  parentRefs:
+    - name: cluster-gateway
+      namespace: istio-system
+  hostnames: [ "app.imperio" ]
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: imperio-app
           port: 8000
